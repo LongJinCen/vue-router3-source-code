@@ -1,15 +1,16 @@
 /* @flow */
-
+// test/unit/specs/path.spec.js
 export function resolvePath (
   relative: string,
   base: string,
   append?: boolean
 ): string {
+  // 如果是一个绝对路径，直接返回
   const firstChar = relative.charAt(0)
   if (firstChar === '/') {
     return relative
   }
-
+  // 在原有的 base 上拼接 relative path，进行合并
   if (firstChar === '?' || firstChar === '#') {
     return base + relative
   }

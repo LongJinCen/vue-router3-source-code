@@ -5,6 +5,7 @@ import { stringifyQuery } from './query'
 
 const trailingSlashRE = /\/?$/
 
+// 优先取 location 中的相关属性，record 作为没有相关属性时的 fallback
 export function createRoute (
   record: ?RouteRecord,
   location: Location,
@@ -70,15 +71,19 @@ function getFullPath (
   return (path || '/') + stringify(query) + hash
 }
 
+// 判断两个 route 是否是一样的 route
+// test/unit/specs/route.spec.js
 export function isSameRoute (a: Route, b: ?Route, onlyPath: ?boolean): boolean {
   if (b === START) {
     return a === b
   } else if (!b) {
     return false
+  // path 相等、hash 相等、query 相等，query 中 '1' 和 1 判定为相等，因为在路径上都会被转换为字符串
   } else if (a.path && b.path) {
     return a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') && (onlyPath ||
       a.hash === b.hash &&
       isObjectEqual(a.query, b.query))
+  // name 相等、hash 相等、query 相等、params 相等
   } else if (a.name && b.name) {
     return (
       a.name === b.name &&
@@ -135,6 +140,7 @@ function queryIncludes (current: Dictionary<string>, target: Dictionary<string>)
   return true
 }
 
+// 处理 beforeRouteEnter 中 next(cb) 注册的 cb
 export function handleRouteEntered (route: Route) {
   for (let i = 0; i < route.matched.length; i++) {
     const record = route.matched[i]

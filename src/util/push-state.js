@@ -23,6 +23,7 @@ export const supportsPushState =
   })()
 
 export function pushState (url?: string, replace?: boolean) {
+  // 每次 pushState 时都记录当前的 scroll 位置
   saveScrollPosition()
   // try...catch the pushState call to get around Safari
   // DOM Exception 18 where it limits to 100 pushState calls
