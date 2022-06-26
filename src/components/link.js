@@ -45,12 +45,13 @@ export default {
   render (h: Function) {
     const router = this.$router
     const current = this.$route
+    // 根据 to 和 当前路由计算得到新路由的信息
     const { location, route, href } = router.resolve(
       this.to,
       current,
       this.append
     )
-
+    // 处理样式
     const classes = {}
     const globalActiveClass = router.options.linkActiveClass
     const globalExactActiveClass = router.options.linkExactActiveClass
@@ -184,7 +185,7 @@ export default {
         data.on = on
       }
     }
-
+    // 渲染 a 标签
     return h(this.tag, data, this.$slots.default)
   }
 }
